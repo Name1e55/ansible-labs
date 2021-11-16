@@ -1,0 +1,30 @@
+---
+- name: Modify grub.conf
+  hosts: grubtest
+
+  tasks:
+  - name: Add ifnames to config
+    lineinfile:
+      backup: yes
+      state: present
+      path: /etc/default/grub
+      backrefs: yes
+      regexp: '^(GRUB_CMDLINE_LINUX=\"(?!.* net\.ifnames=0))(.*)(\")'
+      line: '\1\2 net.ifnames=0\3'
+
+  - name: Add biosdevname to config
+    lineinfile:
+      backup: yes
+      state: present
+      path: /etc/default/grub
+      backrefs: yes
+      regexp: '^(GRUB_CMDLINE_LINUX=\"(?!.* biosdevname=0))(.*)(\")'
+      line: '\1\2 biosdevname=0\3'
+  
+  - name: Update grub
+    command: grub2-mkconfig -o /boot/grub2/grub.cfg
+     
+  - name: Here could be restart
+    debug:
+      msg:  "Here could be a restart" 
+...

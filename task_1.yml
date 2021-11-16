@@ -1,0 +1,39 @@
+---
+- name: Install and configure Apache and firewall
+  hosts: all
+  user: ansible
+
+  tasks:
+  - name: Install Apache
+    yum: 
+      name: httpd
+      state: present
+
+  - name: Start Apache
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+
+  - name: Copy index.html 
+    copy:
+      dest: /var/www/html/index.html
+      src: index.html
+      force: no
+
+  - name: Install firewalld in case it is not
+    yum: 
+      name: firewalld
+      state: present
+
+  - name: Start firewalld
+    service:
+      name: firewalld
+      state: started
+      enabled: yes
+
+  - name: enable ports fro http
+    firewalld: 
+      service: http
+      state: enabled
+...

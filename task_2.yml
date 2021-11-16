@@ -1,0 +1,27 @@
+---
+- name: Remove Apache, index and close ports
+  hosts: all
+  user: ansible
+
+  tasks:
+  - name: Stop Apache
+    service:
+      name: httpd
+      state: stopped
+      enabled: no
+
+  - name: Remove Apache
+    yum: 
+      name: httpd
+      state: absent
+
+  - name: Remove index.html 
+    file:
+      path: /var/www/html/index.html
+      state: absent
+
+  - name: disable ports for http
+    firewalld: 
+      service: http
+      state: disabled
+...
