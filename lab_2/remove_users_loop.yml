@@ -1,0 +1,15 @@
+---
+- name: Drop users
+  hosts: test
+  user: ansible
+
+  tasks:
+  - name: Drop users
+    user:
+      state: absent
+      name: "{{ item }}"
+    loop:
+      - alice
+      - bob
+      - carol
+...

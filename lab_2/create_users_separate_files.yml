@@ -1,0 +1,38 @@
+---
+- name: Add users and set params with separate pwd file for each user
+  hosts: test
+  gather_facts: no
+  user: ansible
+  vars_files:
+    - vars/singles/alice
+    - vars/singles/bob
+    - vars/singles/carol
+
+  tasks:
+  - name: Add alice record if not exist
+    user:
+      state: present
+      create_home: yes
+      name: alice
+      comment: alice@example.com
+      password: "{{ alice_password | string | password_hash('sha512') }}"
+      update_password: on_create
+
+  - name: Add bob record if not exist
+    user:
+      state: present
+      create_home: yes
+      name: bob
+      comment: bob@example.com
+      password: "{{ bob_password | string | password_hash('sha512') }}"
+      update_password: on_create
+
+  - name: Add carol record if not exist
+    user:
+      state: present
+      create_home: yes
+      name: carol
+      comment: carol@example.com
+      password: "{{ carol_password | string | password_hash('sha512') }}"
+      update_password: on_create
+...

@@ -1,0 +1,22 @@
+---
+# It looks like here we will get sensitive data (pwd) in logs without the explicit log disabling
+# due to the fact that we iterate over password values, and at the moment those are alreadu decrypted
+- name: Add users and set params with loop and separate vars file
+  hosts: test
+  user: ansible
+  gather_facts: no
+  vars_files:
+    - vars/users
+
+  tasks:
+  - name: Add user record if not exist
+    user:
+      state: present
+      create_home: yes
+      name: "{{ item.name }}"
+      comment: "{{ item.email }}"
+      password: "{{ item.password | password_hash('sha512') }}"
+      update_password: on_create
+    no_log: yes
+    loop: "{{ users }}"
+...
