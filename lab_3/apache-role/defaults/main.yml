@@ -1,0 +1,6 @@
+---
+# defaults file for apache-role
+apache_state: started
+apache_enabled: yes
+apache_package_state: present
+index_path: /var/www/html/index.html

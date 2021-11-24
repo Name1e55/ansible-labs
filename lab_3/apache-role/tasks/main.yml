@@ -1,0 +1,39 @@
+---
+# tasks file for apache-role
+- name: Include OS-specific vars
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Install Apache
+  package: 
+    name: "{{ apache_package_name }}"
+    state: present
+
+- name: Set fact with service name for handler just for the sake of using set_fact
+  set_fact:
+    apache_name_for_restart: "{{ apache_service_name }}"
+
+- name: Copy index.html 
+  copy:
+    dest: "{{ index_path }}"
+    content: "This is {{ ansible_nodename }} host"
+    force: yes
+  notify: Start and enable Apache
+
+- name: Install firewalld in case it is not
+  package: 
+    name: firewalld
+    state: present
+
+- name: Start firewalld
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: enable ports for http add permanent and restart just for fun
+  firewalld: 
+    service: http
+    state: enabled
+    permanent: yes
+  notify: Restart firewall
+...

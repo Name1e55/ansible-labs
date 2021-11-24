@@ -1,0 +1,8 @@
+---
+- name: Install and configure apache and firewall via role
+  hosts: test
+  user: ansible
+
+  roles:
+    - role: apache-role
+...

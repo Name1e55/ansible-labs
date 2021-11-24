@@ -1,0 +1,2 @@
+# vars for Debian family
+vsftpd_config_path: /etc/vsftpd.conf

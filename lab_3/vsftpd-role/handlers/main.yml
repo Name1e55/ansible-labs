@@ -1,0 +1,14 @@
+---
+# handlers file for vsftpd-role
+- name: Restart vsftpd
+  service:
+    name: vsftpd
+    state: restarted
+
+- name: Reload firewall
+  service:
+    name: firewalld
+    state: reloaded
+
+#- name: Restorecon
+#  command: restorecon -vR /var/ftp/pub/*

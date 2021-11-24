@@ -1,0 +1,12 @@
+---
+# handlers file for apache-role
+- name: Start and enable Apache
+  service:
+    name: "{{ apache_service_name }}"
+    state: started
+    enabled: yes
+- name: Restart firewall
+  service:
+    name: firewalld
+    state: restarted
+
